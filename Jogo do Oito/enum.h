@@ -1,0 +1,1 @@
+enum class Algoritmo {largura, profundidade, estrela, hill};

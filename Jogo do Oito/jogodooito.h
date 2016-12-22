@@ -6,6 +6,9 @@
 #include <gtkmm/frame.h>
 #include "radiobuttonbox.h"
 #include "entradas.h"
+#include "informacoes.h"
+#include "caminho.h"
+
 
 class JogoDoOito : public Gtk::Window {
 public:
@@ -17,4 +20,8 @@ protected:
     RadioButtonBox radiobuttons;
     Gtk::Frame opcao, estados;
     Entradas entradas;
+
+    Algoritmo algoritmo;
+    Informacoes info0, info1;
+    Caminho caminho;
 };

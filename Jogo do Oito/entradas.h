@@ -8,6 +8,9 @@ public:
 	Entradas ();
 	~Entradas ();
 
+    std::array<int, 9> get_inicial (); 
+    std::array<int, 9> get_meta ();
+
 private:
     std::array<Gtk::Entry, 9> inicial, meta;
     Gtk::Grid grid0, grid1;
