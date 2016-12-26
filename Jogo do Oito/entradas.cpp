@@ -1,7 +1,7 @@
 #include "entradas.h"
 
 Entradas::Entradas ()
-    :buscar ("Iniciar Busca")
+    //:buscar ("Iniciar Busca")
 {
 	set_border_width (10);
 
@@ -68,7 +68,7 @@ Entradas::Entradas ()
 	grid1.attach (meta[8], 2, 2, 1, 1);
 
 	pack_start (grid1, Gtk::PACK_EXPAND_PADDING);
-	pack_start (buscar, Gtk::PACK_EXPAND_PADDING);
+	//pack_start (buscar, Gtk::PACK_EXPAND_PADDING);
 }
 
 Entradas::~Entradas ()

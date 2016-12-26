@@ -15,5 +15,5 @@ public:
 private:
     std::array<Gtk::Entry, 9> inicial, meta;
     Gtk::Grid grid0, grid1;
-    Gtk::Button buscar;
+    //Gtk::Button buscar;
 };
