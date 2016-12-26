@@ -19,8 +19,12 @@ public:
 
 protected:
 	bool busca_em_largura ();
+	bool e_solucionavel (const std::array<int, 9>& e0,
+		const std::array<int, 9>& e1);
 	bool e_meta (const std::array<int, 9>& e0,
-	    const std::array<int, 9> e1);
+	    const std::array<int, 9>& e1);
+	std::array<int, 9> inverte_array (const std::array<int, 9>& arr);
+	std::vector<Node*> expande (Node *n);
 
     Gtk::Box main_box;
     RadioButtonBox radiobuttons;
@@ -30,4 +34,8 @@ protected:
     Algoritmo algoritmo;
     Informacoes info0, info1;
     Caminho caminho;
+
+    std::vector<Node*> todos_os_nos;
+    int n_estados_testados;
+    int n_estados_solucao;
 };

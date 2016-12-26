@@ -35,24 +35,98 @@ JogoDoOito::~JogoDoOito ()
 
 bool JogoDoOito::busca_em_largura ()
 {
-	std::vector<Node*> nodes;
-	std::array<int, 9> meta;
+	std::array<int, 9> est_inicial = entradas.get_inicial ();
+	std::array<int, 9> est_meta = entradas.get_meta ();
 
-	nodes.push_back (new Node (entradas.get_inicial (), nullptr));
-	meta = entradas.get_meta ();
+	if (!e_solucionavel (est_inicial, est_meta))
+		return false;
 
-	for ( ; ; ) {
-		if (!nodes.size ()) { return false; }
-		Node *node = nodes.back (); nodes.pop_back ();
-        if (e_meta (node->get_estado (), meta))
-        	return true;
-        //nodes = insere_todos (expandir (node), nodes);
+    Node *nodo = new Node (est_inicial, nullptr);
+    todos_os_nos.push_back (nodo);
+
+	for (std::vector<Node*> nodos; !e_meta (nodo, est_meta); ) {
+		nodos = insere_todos (expande (nodo), nodos);
+		nodo = nodos.back ();
+		nodos.pop_back ();
 	}
 
+	return true;
 }
 
-bool e_meta (const std::array<int, 9>& e0,
-	    const std::array<int, 9> e1)
+std::vector<Node*> JogoDoOito::expande (Node *n)
+{
+	std::vector<Node*> filhos;
+    
+
+    switch (cade_o_branco (n->get_estado ())) {
+    	case 0: 
+        
+    	break;
+        
+        case 1:
+
+    	break;
+
+    	case 2:
+
+    	break;
+
+    	case 3:
+
+    	break;
+
+    	case 4:
+
+    	break;
+
+    	case 5:
+
+    	break;
+
+    	case 6:
+
+    	break;
+
+    	case 7:
+
+    	break;
+
+    	case 8:
+
+    	break;
+    }
+}
+
+std::array<int, 9> JogoDoOito::inverte_array (const std::array<int, 9>& arr)
+{
+	std::array<int, 9> novo_array;
+
+	for (int i = 0; i < arr.size (); ++i) 
+		novo_array[arr[i]] = i;
+
+	return novo_array;
+}
+
+bool JogoDoOito::e_solucionavel (const std::array<int, 9>& e0,
+		const std::array<int, 9>& e1)
+{
+	std::array<int, 9> array_aux = inverte_array (e1);
+
+	int inversoes = 0;
+
+	for (int i = 0; i < e0.size () - 1; ++i)
+		for (int j = i + 1; i < e1.size (); ++j)
+            if (e0[i] && e1[j] && array_aux[e0[i]] > array_aux[e0[j]])
+            	++inversoes;
+
+    if (inversoes % 2 == 0)
+        return true;
+
+    return false;            
+}
+
+bool JogoDoOito::e_meta (const std::array<int, 9>& e0,
+	    const std::array<int, 9>& e1)
 {
 	for (int i = 0, j = 0; i != e0.size (); ++i, ++j)
 		if (e0[i] != e1[j])
