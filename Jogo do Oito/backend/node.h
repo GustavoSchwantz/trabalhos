@@ -6,13 +6,7 @@
 template<typename State, typename Action>
 class Node {
 public:
-	Node (const State& s, Node* const f)
-	    :state{s}, father{f}
-	{
-		
-	}
-
-	Node (Action& a, const State& s, Node* const f)
+    Node (const Action& a, const State& s, Node* const f)
 	    :action{a}, state{s}, father{f}
 	{
 		
@@ -23,7 +17,7 @@ public:
 
 	}
 
-	Action& get_action ()
+	const Action& get_action ()
     {
     	return action;
     }
@@ -39,7 +33,7 @@ public:
     }
     
 private:
-	Action action;
+	const Action action;
     const State state;
     Node* const father;
 };

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <array>
-#include "problem.h"
-#include "moves.h"
+#include "../problem.h"
+#include "../moves.h"
 
 struct FO {
     void sucessor_fun (std::array<int, 4>& e) const 

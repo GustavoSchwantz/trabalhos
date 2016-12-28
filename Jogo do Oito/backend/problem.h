@@ -1,9 +1,9 @@
-t/* 
- * Problem class 
- * @author: Gustavo Schwantz Oliveira
- */
+/* 
+* Problem class 
+* @author: Gustavo Schwantz Oliveira
+*/
 
-template<typename State, typename Action, typename FunObj>
+template<typename State, typename FunObj>
 class Problem {
 public:
 	Problem (const State& i, const State& f, const FunObj& fo)
@@ -14,7 +14,7 @@ public:
 
 	~Problem ()
 	{
-
+		
 	} 
 
 	const State& initial_state ()
