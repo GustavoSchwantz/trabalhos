@@ -1,0 +1,2 @@
+=> criar uma estrutura de dados "node" para representar cada estado.
+Daí é só implementar cada algoritmo de busca.
