@@ -61,6 +61,32 @@ class SearchProblem:
         """
         util.raiseNotDefined()
 
+class Node:
+    def _init_ (self, state, actionSeq = [], pathCost = 0):
+        self.state = state
+        self.actionSeq = actionSeq
+        self.pathCost = pathCost
+
+    def getState (self):
+        return self.state
+
+    def getActionSeq (self):
+        return self.actionSeq 
+
+    def getPathCost (self):
+        return self.pathCost
+
+def expand (node, problem):
+    nodes = []
+    for triple in problem.getSuccessors (node.getState ()):
+        nodes.append (Node (triple[0], node.getActionSeq () + [triple[1]],
+            node.getPathCost + triple[2]))
+    return nodes
+
+def insertAll (nodes, fringe):
+    for node in nodes:
+        fringe.append (node)
+    return fringe     
 
 def tinyMazeSearch(problem):
     """
@@ -95,14 +121,19 @@ def breadthFirstSearch(problem):
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    #util.raiseNotDefined()
+    from util import PriorityQueue
+    closed = []
+    fringe = PriorityQueue ()
+    node = Node (problem.getStartState ())
+    fringe.push (node, 0)
+    while 1:
+        node = fringe.pop ()
+        if problem.isGoalState (node.getState ()):
+            return node.getActionSeq ()
+        if isNotInClosed (node.getState ()):
+            closed.append (node.getState ())
+            fringe = insertAll (expand (node, problem), fringe)
 
-    from game import Directions
-    s = Directions.SOUTH
-    w = Directions.WEST
-    return  [s, s, w, s, w, w, s, w]
 
 def nullHeuristic(state, problem=None):
     """
