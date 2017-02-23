@@ -18,6 +18,11 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+import node
+
+from util import *
+from node import *
+from helpFunctions import *
 
 class SearchProblem:
     """
@@ -59,34 +64,7 @@ class SearchProblem:
         This method returns the total cost of a particular sequence of actions.
         The sequence must be composed of legal moves.
         """
-        util.raiseNotDefined()
-
-class Node:
-    def _init_ (self, state, actionSeq = [], pathCost = 0):
-        self.state = state
-        self.actionSeq = actionSeq
-        self.pathCost = pathCost
-
-    def getState (self):
-        return self.state
-
-    def getActionSeq (self):
-        return self.actionSeq 
-
-    def getPathCost (self):
-        return self.pathCost
-
-def expand (node, problem):
-    nodes = []
-    for triple in problem.getSuccessors (node.getState ()):
-        nodes.append (Node (triple[0], node.getActionSeq () + [triple[1]],
-            node.getPathCost + triple[2]))
-    return nodes
-
-def insertAll (nodes, fringe):
-    for node in nodes:
-        fringe.append (node)
-    return fringe     
+        util.raiseNotDefined() 
 
 def tinyMazeSearch(problem):
     """
@@ -121,19 +99,18 @@ def breadthFirstSearch(problem):
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
-    from util import PriorityQueue
+    """Search choosing always the node with the lowest path cost."""
     closed = []
     fringe = PriorityQueue ()
     node = Node (problem.getStartState ())
     fringe.push (node, 0)
-    while 1:
+    while True:
         node = fringe.pop ()
         if problem.isGoalState (node.getState ()):
             return node.getActionSeq ()
-        if isNotInClosed (node.getState ()):
+        if isNotInClosed (node.getState (), closed):
             closed.append (node.getState ())
             fringe = insertAll (expand (node, problem), fringe)
-
 
 def nullHeuristic(state, problem=None):
     """
