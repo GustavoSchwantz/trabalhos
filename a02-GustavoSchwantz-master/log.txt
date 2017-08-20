@@ -1,0 +1,328 @@
+./test
+[33m  when:[0m Tenho apenas um processo, um frame e uma página
+[33m      then:[0m Working set tem que ser um
+[32m        PASSED!
+[0m[33m      then:[0m Somente o primeiro acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, um frame e 10 páginas sendo acessadas em sequencia
+[33m      then:[0m Todo acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, dois frames e 5 páginas sendo acessadas com repetições
+[33m      then:[0m Working set é total de frames (pela restrição de contar apenas as páginas carregadas)
+[32m        PASSED!
+[0m[33m      then:[0m Três acessos são pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho dois processos, cada um com duas páginas, quatro frames e equilíbrio de acessos
+[33m      then:[0m Working sets iguais
+[32m        PASSED!
+[0m[33m      then:[0m Espero ter só pf compulsórios
+[32m        PASSED!
+[0m[33m  when:[0m Tenho 4 processos, cinco frames e apenas um processo acessando
+[33m      then:[0m Espero ter apenas 1 pf
+[31m        NOT PASSED!
+        got: nan , expecting 0.100000 [0m
+[33m  when:[0m Tenho 4 processos, 20 frames e apenas um processo acessando 5 páginas
+[33m      then:[0m Espero ter WS maior
+[32m        PASSED!
+[0m[33m      then:[0m Espero só ter pf
+[31m        NOT PASSED!
+        got: nan , expecting 1.000000 [0m
+[33m  when:[0m Tenho um processo, 4 frames e 5 páginas
+[33m      then:[0m Espero que a página 1 seja vítima e cause pf
+[31m        NOT PASSED!
+        got: 0.625000 , expecting 0.750000 [0m
+Grading 
+You did [31m 9 [0m out of 14 -- grade 64/100
+make: *** [grade] Error 9
+./test
+[33m  when:[0m Tenho apenas um processo, um frame e uma página
+[33m      then:[0m Working set tem que ser um
+[32m        PASSED!
+[0m[33m      then:[0m Somente o primeiro acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, um frame e 10 páginas sendo acessadas em sequencia
+[33m      then:[0m Todo acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, dois frames e 5 páginas sendo acessadas com repetições
+[33m      then:[0m Working set é total de frames (pela restrição de contar apenas as páginas carregadas)
+[32m        PASSED!
+[0m[33m      then:[0m Três acessos são pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho dois processos, cada um com duas páginas, quatro frames e equilíbrio de acessos
+[33m      then:[0m Working sets iguais
+[32m        PASSED!
+[0m[33m      then:[0m Espero ter só pf compulsórios
+[32m        PASSED!
+[0m[33m  when:[0m Tenho 4 processos, cinco frames e apenas um processo acessando
+[33m      then:[0m Espero ter apenas 1 pf
+[31m        NOT PASSED!
+        got: nan , expecting 0.100000 [0m
+[33m  when:[0m Tenho 4 processos, 20 frames e apenas um processo acessando 5 páginas
+[33m      then:[0m Espero ter WS maior
+[32m        PASSED!
+[0m[33m      then:[0m Espero só ter pf
+[31m        NOT PASSED!
+        got: nan , expecting 1.000000 [0m
+[33m  when:[0m Tenho um processo, 4 frames e 5 páginas
+[33m      then:[0m Espero que a página 1 seja vítima e cause pf
+[31m        NOT PASSED!
+        got: 0.625000 , expecting 0.750000 [0m
+Grading 
+You did [31m 9 [0m out of 14 -- grade 64/100
+make: *** [grade] Error 9
+gcc -g -O1 -std=c99 -Wall -Werrno   -c -o test.o test.c
+warning: unknown warning option '-Werrno' [-Wunknown-warning-option]
+1 warning generated.
+gcc -g -O1 -std=c99 -Wall -Werrno memvirt.o test.o -o test -lm 
+./test
+[33m  when:[0m Tenho apenas um processo, um frame e uma página
+[33m      then:[0m Working set tem que ser um
+[32m        PASSED!
+[0m[33m      then:[0m Somente o primeiro acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, um frame e 10 páginas sendo acessadas em sequencia
+[33m      then:[0m Todo acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, dois frames e 5 páginas sendo acessadas com repetições
+[33m      then:[0m Working set é total de frames (pela restrição de contar apenas as páginas carregadas)
+[32m        PASSED!
+[0m[33m      then:[0m Três acessos são pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho dois processos, cada um com duas páginas, quatro frames e equilíbrio de acessos
+[33m      then:[0m Working sets iguais
+[32m        PASSED!
+[0m[33m      then:[0m Espero ter só pf compulsórios
+[32m        PASSED!
+[0m[33m  when:[0m Tenho 4 processos, cinco frames e apenas um processo acessando
+[33m      then:[0m Espero ter apenas 1 pf
+[31m        NOT PASSED!
+        got: nan , expecting 0.100000 [0m
+[33m  when:[0m Tenho 4 processos, 20 frames e apenas um processo acessando 5 páginas
+[33m      then:[0m Espero ter WS maior
+[32m        PASSED!
+[0m[33m      then:[0m Espero só ter pf
+[31m        NOT PASSED!
+        got: nan , expecting 1.000000 [0m
+[33m  when:[0m Tenho um processo, 4 frames e 5 páginas
+[33m      then:[0m Espero que a página 1 seja vítima e cause pf
+[31m        NOT PASSED!
+        got: 0.625000 , expecting 0.750000 [0m
+Grading 
+You did [31m 9 [0m out of 14 -- grade 64/100
+make: *** [grade] Error 9
+./test
+[33m  when:[0m Tenho apenas um processo, um frame e uma página
+[33m      then:[0m Working set tem que ser um
+[32m        PASSED!
+[0m[33m      then:[0m Somente o primeiro acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, um frame e 10 páginas sendo acessadas em sequencia
+[33m      then:[0m Todo acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, dois frames e 5 páginas sendo acessadas com repetições
+[33m      then:[0m Working set é total de frames (pela restrição de contar apenas as páginas carregadas)
+[32m        PASSED!
+[0m[33m      then:[0m Três acessos são pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho dois processos, cada um com duas páginas, quatro frames e equilíbrio de acessos
+[33m      then:[0m Working sets iguais
+[32m        PASSED!
+[0m[33m      then:[0m Espero ter só pf compulsórios
+[32m        PASSED!
+[0m[33m  when:[0m Tenho 4 processos, cinco frames e apenas um processo acessando
+[33m      then:[0m Espero ter apenas 1 pf
+[31m        NOT PASSED!
+        got: nan , expecting 0.100000 [0m
+[33m  when:[0m Tenho 4 processos, 20 frames e apenas um processo acessando 5 páginas
+[33m      then:[0m Espero ter WS maior
+[32m        PASSED!
+[0m[33m      then:[0m Espero só ter pf
+[31m        NOT PASSED!
+        got: nan , expecting 1.000000 [0m
+[33m  when:[0m Tenho um processo, 4 frames e 5 páginas
+[33m      then:[0m Espero que a página 1 seja vítima e cause pf
+[31m        NOT PASSED!
+        got: 0.625000 , expecting 0.750000 [0m
+Grading 
+You did [31m 9 [0m out of 14 -- grade 64/100
+make: *** [grade] Error 9
+./test
+[33m  when:[0m Tenho apenas um processo, um frame e uma página
+[33m      then:[0m Working set tem que ser um
+[32m        PASSED!
+[0m[33m      then:[0m Somente o primeiro acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, um frame e 10 páginas sendo acessadas em sequencia
+[33m      then:[0m Todo acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, dois frames e 5 páginas sendo acessadas com repetições
+[33m      then:[0m Working set é total de frames (pela restrição de contar apenas as páginas carregadas)
+[32m        PASSED!
+[0m[33m      then:[0m Três acessos são pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho dois processos, cada um com duas páginas, quatro frames e equilíbrio de acessos
+[33m      then:[0m Working sets iguais
+[32m        PASSED!
+[0m[33m      then:[0m Espero ter só pf compulsórios
+[32m        PASSED!
+[0m[33m  when:[0m Tenho 4 processos, cinco frames e apenas um processo acessando
+[33m      then:[0m Espero ter apenas 1 pf
+[31m        NOT PASSED!
+        got: nan , expecting 0.100000 [0m
+[33m  when:[0m Tenho 4 processos, 20 frames e apenas um processo acessando 5 páginas
+[33m      then:[0m Espero ter WS maior
+[32m        PASSED!
+[0m[33m      then:[0m Espero só ter pf
+[31m        NOT PASSED!
+        got: nan , expecting 1.000000 [0m
+[33m  when:[0m Tenho um processo, 4 frames e 5 páginas
+[33m      then:[0m Espero que a página 1 seja vítima e cause pf
+[31m        NOT PASSED!
+        got: 0.625000 , expecting 0.750000 [0m
+Grading 
+You did [31m 9 [0m out of 14 -- grade 64/100
+make: *** [grade] Error 9
+./test
+[33m  when:[0m Tenho apenas um processo, um frame e uma página
+[33m      then:[0m Working set tem que ser um
+[32m        PASSED!
+[0m[33m      then:[0m Somente o primeiro acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, um frame e 10 páginas sendo acessadas em sequencia
+[33m      then:[0m Todo acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, dois frames e 5 páginas sendo acessadas com repetições
+[33m      then:[0m Working set é total de frames (pela restrição de contar apenas as páginas carregadas)
+[32m        PASSED!
+[0m[33m      then:[0m Três acessos são pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho dois processos, cada um com duas páginas, quatro frames e equilíbrio de acessos
+[33m      then:[0m Working sets iguais
+[32m        PASSED!
+[0m[33m      then:[0m Espero ter só pf compulsórios
+[32m        PASSED!
+[0m[33m  when:[0m Tenho 4 processos, cinco frames e apenas um processo acessando
+[33m      then:[0m Espero ter apenas 1 pf
+[31m        NOT PASSED!
+        got: nan , expecting 0.100000 [0m
+[33m  when:[0m Tenho 4 processos, 20 frames e apenas um processo acessando 5 páginas
+[33m      then:[0m Espero ter WS maior
+[32m        PASSED!
+[0m[33m      then:[0m Espero só ter pf
+[31m        NOT PASSED!
+        got: nan , expecting 1.000000 [0m
+[33m  when:[0m Tenho um processo, 4 frames e 5 páginas
+[33m      then:[0m Espero que a página 1 seja vítima e cause pf
+[31m        NOT PASSED!
+        got: 0.625000 , expecting 0.750000 [0m
+Grading 
+You did [31m 9 [0m out of 14 -- grade 64/100
+make: *** [grade] Error 9
+./test
+[33m  when:[0m Tenho apenas um processo, um frame e uma página
+[33m      then:[0m Working set tem que ser um
+[32m        PASSED!
+[0m[33m      then:[0m Somente o primeiro acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, um frame e 10 páginas sendo acessadas em sequencia
+[33m      then:[0m Todo acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, dois frames e 5 páginas sendo acessadas com repetições
+[33m      then:[0m Working set é total de frames (pela restrição de contar apenas as páginas carregadas)
+[32m        PASSED!
+[0m[33m      then:[0m Três acessos são pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho dois processos, cada um com duas páginas, quatro frames e equilíbrio de acessos
+[33m      then:[0m Working sets iguais
+[32m        PASSED!
+[0m[33m      then:[0m Espero ter só pf compulsórios
+[32m        PASSED!
+[0m[33m  when:[0m Tenho 4 processos, cinco frames e apenas um processo acessando
+[33m      then:[0m Espero ter apenas 1 pf
+[31m        NOT PASSED!
+        got: nan , expecting 0.100000 [0m
+[33m  when:[0m Tenho 4 processos, 20 frames e apenas um processo acessando 5 páginas
+[33m      then:[0m Espero ter WS maior
+[32m        PASSED!
+[0m[33m      then:[0m Espero só ter pf
+[31m        NOT PASSED!
+        got: nan , expecting 1.000000 [0m
+[33m  when:[0m Tenho um processo, 4 frames e 5 páginas
+[33m      then:[0m Espero que a página 1 seja vítima e cause pf
+[31m        NOT PASSED!
+        got: 0.625000 , expecting 0.750000 [0m
+Grading 
+You did [31m 9 [0m out of 14 -- grade 64/100
+make: *** [grade] Error 9
+./test
+[33m  when:[0m Tenho apenas um processo, um frame e uma página
+[33m      then:[0m Working set tem que ser um
+[32m        PASSED!
+[0m[33m      then:[0m Somente o primeiro acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, um frame e 10 páginas sendo acessadas em sequencia
+[33m      then:[0m Todo acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, dois frames e 5 páginas sendo acessadas com repetições
+[33m      then:[0m Working set é total de frames (pela restrição de contar apenas as páginas carregadas)
+[32m        PASSED!
+[0m[33m      then:[0m Três acessos são pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho dois processos, cada um com duas páginas, quatro frames e equilíbrio de acessos
+[33m      then:[0m Working sets iguais
+[32m        PASSED!
+[0m[33m      then:[0m Espero ter só pf compulsórios
+[32m        PASSED!
+[0m[33m  when:[0m Tenho 4 processos, cinco frames e apenas um processo acessando
+[33m      then:[0m Espero ter apenas 1 pf
+[31m        NOT PASSED!
+        got: nan , expecting 0.100000 [0m
+[33m  when:[0m Tenho 4 processos, 20 frames e apenas um processo acessando 5 páginas
+[33m      then:[0m Espero ter WS maior
+[32m        PASSED!
+[0m[33m      then:[0m Espero só ter pf
+[31m        NOT PASSED!
+        got: nan , expecting 1.000000 [0m
+[33m  when:[0m Tenho um processo, 4 frames e 5 páginas
+[33m      then:[0m Espero que a página 1 seja vítima e cause pf
+[31m        NOT PASSED!
+        got: 0.625000 , expecting 0.750000 [0m
+Grading 
+You did [31m 9 [0m out of 14 -- grade 64/100
+make: *** [grade] Error 9
+./test
+[33m  when:[0m Tenho apenas um processo, um frame e uma página
+[33m      then:[0m Working set tem que ser um
+[32m        PASSED!
+[0m[33m      then:[0m Somente o primeiro acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, um frame e 10 páginas sendo acessadas em sequencia
+[33m      then:[0m Todo acesso é pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho apenas um processo, dois frames e 5 páginas sendo acessadas com repetições
+[33m      then:[0m Working set é total de frames (pela restrição de contar apenas as páginas carregadas)
+[32m        PASSED!
+[0m[33m      then:[0m Três acessos são pf
+[32m        PASSED!
+[0m[33m  when:[0m Tenho dois processos, cada um com duas páginas, quatro frames e equilíbrio de acessos
+[33m      then:[0m Working sets iguais
+[32m        PASSED!
+[0m[33m      then:[0m Espero ter só pf compulsórios
+[32m        PASSED!
+[0m[33m  when:[0m Tenho 4 processos, cinco frames e apenas um processo acessando
+[33m      then:[0m Espero ter apenas 1 pf
+[31m        NOT PASSED!
+        got: nan , expecting 0.100000 [0m
+[33m  when:[0m Tenho 4 processos, 20 frames e apenas um processo acessando 5 páginas
+[33m      then:[0m Espero ter WS maior
+[32m        PASSED!
+[0m[33m      then:[0m Espero só ter pf
+[31m        NOT PASSED!
+        got: nan , expecting 1.000000 [0m
+[33m  when:[0m Tenho um processo, 4 frames e 5 páginas
+[33m      then:[0m Espero que a página 1 seja vítima e cause pf
+[31m        NOT PASSED!
+        got: 0.625000 , expecting 0.750000 [0m
+Grading 
+You did [31m 9 [0m out of 14 -- grade 64/100
+make: *** [grade] Error 9
