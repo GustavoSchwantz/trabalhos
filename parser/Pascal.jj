@@ -1,0 +1,255 @@
+PARSER_BEGIN(Pascal)
+import java.io.*;
+public class Pascal {
+
+  public static void main (String args[]) throws ParseException,IOException {
+    
+    Pascal parser = new Pascal (new FileInputStream(args[0]));
+    parser.programa ();
+  }
+}
+
+PARSER_END(Pascal)
+
+SKIP : { " " | "\t" | "\n" | "\r" }
+
+TOKEN :
+{
+  <PROGRAM: "program">
+| <INTEIRO: "integer">
+| <REAL: "real">
+| <VAR: "var">
+| <OF: "of">
+| <FUNCTION: "function">
+| <PROCEDURE: "procedure">
+| <LBRACE: "(">
+| <RBRACE: ")">
+| <SEMI: ";">
+| <TWOP: ":">
+| <ARRAY: "array">
+| <BEGIN: "begin">
+| <END: "end">
+| <COMMA: ",">
+| <PLUS: "+">
+| <MINUS: "-">
+| <IF: "if">
+| <DO: "do">
+| <NOT: "not">
+| <ELSE: "else">
+| <THEN: "then">
+| <WHILE: "while">
+}
+
+TOKEN :
+{
+ <OPERADOR_MULTIPLICATIVO: ("*"|"/"|"div"|"mod"|"and") >
+|
+ <OPERADOR_ADITIVO: ("+"| "-" | "or") >
+|
+ <ID: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"])* >
+|
+ <NUM: (["0"-"9"])+ ( "." (["0"-"9"])+ )? ( "E" ("+"|"-")? (["0"-"9"])+ )? >
+|
+ <OPERADOR_RELACIONAL: ("="|"<>"|"<"|"<="|">="|">") > 
+|
+ <OPERADOR_DE_ATRIBUICAO: ":=" >
+}
+
+void programa():
+{}
+{ <PROGRAM> <ID> <LBRACE> lista_de_identificadores () <RBRACE> <SEMI> 
+   declaracoes () 
+   declaracoes_de_subprogramas () 
+   enunciado_composto () 
+   "."
+  <EOF> 
+}
+
+void lista_de_identificadores():
+{}
+{
+  <ID> lista2 ()
+}
+
+void lista2():
+{}
+{
+ ("," <ID> lista2())?
+}
+
+void declaracoes():
+{}
+{
+ (<VAR> lista_de_identificadores () <TWOP> tipo () <SEMI> declaracoes ())?
+}
+
+void tipo():
+{}
+{
+ tipo_padrao () | ( <ARRAY> "[" <NUM> ".." <NUM> "]" "of" tipo_padrao () )
+}
+
+void tipo_padrao():
+{}
+{
+ <INTEIRO> | <REAL>
+}
+
+void declaracoes_de_subprogramas():
+{}
+{
+ (declaracao_de_subprograma () <SEMI> declaracoes_de_subprogramas ())?
+}
+
+void declaracao_de_subprograma():
+{}
+{
+ cabecalho_de_subprograma () declaracoes () enunciado_composto ()
+}
+
+void cabecalho_de_subprograma():
+{}
+{
+ <FUNCTION> <ID> argumentos () <TWOP> tipo_padrao () <SEMI>
+|
+ <PROCEDURE> <ID> argumentos () <SEMI>
+}
+
+void argumentos():
+{}
+{
+ (<LBRACE> lista_de_parametros () <RBRACE>)?
+}
+
+void lista_de_parametros():
+{}
+{
+ lista_de_identificadores () <TWOP> tipo () lista_de_parametros2 ()
+}
+
+void lista_de_parametros2():
+{}
+{
+ (<TWOP> lista_de_identificadores () <TWOP> tipo () lista_de_parametros2 ())?
+}
+
+void enunciado_composto():
+{}
+{
+ <BEGIN> enunciados_opcionais () <END>
+} 
+
+void enunciados_opcionais():
+{}
+{
+ (lista_de_enunciados ())?
+}
+
+void lista_de_enunciados():
+{}
+{
+ enunciado () lista_de_enunciados2 ()
+}
+
+void lista_de_enunciados2():
+{}
+{
+ (<SEMI> enunciado () lista_de_enunciados2 ())?
+}
+
+void enunciado():
+{}
+{
+ <ID> enunciado2 ()
+|
+ enunciado_composto ()
+|
+ <IF> expressao () <THEN> enunciado () <ELSE> enunciado ()
+|
+ <WHILE> expressao () <DO> enunciado ()
+}
+
+void enunciado2():
+{}
+{
+(
+ <OPERADOR_DE_ATRIBUICAO> expressao ()
+|
+ "[" expressao () "]" <OPERADOR_DE_ATRIBUICAO> expressao ()
+|
+ <LBRACE> lista_de_expressoes () <RBRACE>
+)?
+}
+
+void lista_de_expressoes():
+{}
+{
+ expressao () lista_de_expressoes2 ()
+}
+
+void lista_de_expressoes2():
+{}
+{
+ (<COMMA> expressao ())? 
+}
+
+void expressao():
+{}
+{
+ expressao_simples () aux3 ()
+}
+
+void aux3():
+{}
+{
+ (<OPERADOR_RELACIONAL> expressao_simples ())?
+}
+
+void expressao_simples():
+{}
+{
+ expressao_simples2 () expressao_simplesl () 
+}
+
+void expressao_simplesl():
+{}
+{
+ (<OPERADOR_ADITIVO> termo () expressao_simplesl ())?
+}
+
+void expressao_simples2():
+{}
+{
+ termo () | sinal () termo ()
+}
+
+void termo():
+{}
+{
+ fator () termo2 ()
+}
+
+void termo2():
+{}
+{
+ (<OPERADOR_MULTIPLICATIVO> fator ())? 
+}
+
+void fator():
+{}
+{
+ <ID> fator2 () | <NUM> | <LBRACE> expressao () <RBRACE> | "not" fator ()
+}
+
+void fator2():
+{}
+{
+ (<LBRACE> lista_de_expressoes () <RBRACE>)?
+}
+
+void sinal():
+{}
+{
+ <PLUS> | <MINUS>
+}
+
