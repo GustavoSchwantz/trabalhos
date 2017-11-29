@@ -30,14 +30,15 @@ TOKEN :
 | <BEGIN: "begin">
 | <END: "end">
 | <COMMA: ",">
-| <PLUS: "+">
-| <MINUS: "-">
 | <IF: "if">
 | <DO: "do">
 | <NOT: "not">
 | <ELSE: "else">
 | <THEN: "then">
 | <WHILE: "while">
+| <RBRACKET: "[">
+| <LBRACKET: "]">
+| <WN: "..">
 }
 
 TOKEN :
@@ -53,6 +54,8 @@ TOKEN :
  <OPERADOR_RELACIONAL: ("="|"<>"|"<"|"<="|">="|">") > 
 |
  <OPERADOR_DE_ATRIBUICAO: ":=" >
+|
+ <SINAIS: ("+" | "-")> 
 }
 
 void programa():
@@ -80,13 +83,19 @@ void lista2():
 void declaracoes():
 {}
 {
- (<VAR> lista_de_identificadores () <TWOP> tipo () <SEMI> declaracoes ())?
+ d2 ()
+}
+
+void d2():
+{}
+{
+ (<VAR> lista_de_identificadores () <TWOP> tipo () <SEMI> d2 ())?
 }
 
 void tipo():
 {}
 {
- tipo_padrao () | ( <ARRAY> "[" <NUM> ".." <NUM> "]" "of" tipo_padrao () )
+ tipo_padrao () | ( <ARRAY> <LBRACKET> <NUM> <WN> <NUM> <RBRACKET> <OF> tipo_padrao () )
 }
 
 void tipo_padrao():
@@ -98,7 +107,13 @@ void tipo_padrao():
 void declaracoes_de_subprogramas():
 {}
 {
- (declaracao_de_subprograma () <SEMI> declaracoes_de_subprogramas ())?
+ ds2 ()
+}
+
+void ds2():
+{}
+{
+ (declaracao_de_subprograma ()  <SEMI> ds2 ())?
 }
 
 void declaracao_de_subprograma():
@@ -160,7 +175,7 @@ void lista_de_enunciados2():
 void enunciado():
 {}
 {
- <ID> enunciado2 ()
+ <ID> e2 ()
 |
  enunciado_composto ()
 |
@@ -169,16 +184,34 @@ void enunciado():
  <WHILE> expressao () <DO> enunciado ()
 }
 
-void enunciado2():
+void e2():
 {}
 {
-(
- <OPERADOR_DE_ATRIBUICAO> expressao ()
-|
- "[" expressao () "]" <OPERADOR_DE_ATRIBUICAO> expressao ()
-|
- <LBRACE> lista_de_expressoes () <RBRACE>
-)?
+ variavel () <OPERADOR_DE_ATRIBUICAO> expressao () | chamada_de_procedimento () 
+}
+
+void variavel():
+{}
+{
+ v2 ()
+}
+
+void v2():
+{}
+{
+ (<LBRACKET> expressao () <RBRACKET>)?
+}
+
+void chamada_de_procedimento():
+{}
+{
+ cp2 ()
+}
+
+void cp2():
+{}
+{
+ (<LBRACE> lista_de_expressoes () <RBRACE>)?
 }
 
 void lista_de_expressoes():
@@ -190,16 +223,16 @@ void lista_de_expressoes():
 void lista_de_expressoes2():
 {}
 {
- (<COMMA> expressao ())? 
+ (<COMMA> expressao () lista_de_expressoes2 ())? 
 }
 
 void expressao():
 {}
 {
- expressao_simples () aux3 ()
+ expressao_simples () expressao2 ()
 }
 
-void aux3():
+void expressao2():
 {}
 {
  (<OPERADOR_RELACIONAL> expressao_simples ())?
@@ -208,16 +241,16 @@ void aux3():
 void expressao_simples():
 {}
 {
- expressao_simples2 () expressao_simplesl () 
+ es2 () es3 () 
 }
 
-void expressao_simplesl():
+void es3():
 {}
 {
- (<OPERADOR_ADITIVO> termo () expressao_simplesl ())?
+ (<OPERADOR_ADITIVO> termo () es3 ())?
 }
 
-void expressao_simples2():
+void es2():
 {}
 {
  termo () | sinal () termo ()
@@ -226,19 +259,19 @@ void expressao_simples2():
 void termo():
 {}
 {
- fator () termo2 ()
+ fator () t2 ()
 }
 
-void termo2():
+void t2():
 {}
 {
- (<OPERADOR_MULTIPLICATIVO> fator ())? 
+ (<OPERADOR_MULTIPLICATIVO> fator () t2 ())?
 }
 
 void fator():
 {}
 {
- <ID> fator2 () | <NUM> | <LBRACE> expressao () <RBRACE> | "not" fator ()
+ <ID> fator2 () | <NUM> | <LBRACE> expressao () <RBRACE> | <NOT> fator ()
 }
 
 void fator2():
@@ -250,6 +283,6 @@ void fator2():
 void sinal():
 {}
 {
- <PLUS> | <MINUS>
+ <SINAIS>
 }
 
