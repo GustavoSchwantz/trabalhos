@@ -1,0 +1,180 @@
+PARSER_BEGIN(Lugosi)
+import java.io.*;
+public class Lugosi {
+
+    public static void main(String args[]) throws Exception {
+    // abrir o arquivo passado por linha
+    // de comando contento o código em Lugosi:
+
+    FileInputStream fs = new FileInputStream(new File(args[0]));
+
+    // Instanciar o parser da linguagem Lugosi passando
+    // como argumento o arquivo contendo o código
+    //Lugosi a ser processado:
+
+    Lugosi parser = new Lugosi(fs);
+
+    // Chamar a primeira regra do parser que irá
+    // analisar o código e devolver a árvore sintática
+    
+    parser.LUGOSI();
+    // ArvoreLugosi arvore =parser.LUGOSI();
+
+    // Passar a árvore para o prety printer:
+
+    // pprint(arvore);
+
+    // passar a árvore para o gerador de código
+
+    // geraCodigo(arvore);
+
+    }
+
+// public static void pprint(ArvoreLugosi prog) {}
+// public static void geraCodigo(ArvoreLugosi prog) {}
+
+}
+PARSER_END(Lugosi)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+}
+
+TOKEN :
+{
+  < IF: "if">
+|
+  < DO: "do">
+|
+  < VAR: "var">
+|
+  < INT: "int">
+|
+  < TRUE: "true">
+|
+  < BOOL: "bool">
+|
+  <MAIN: "main">
+|
+  <WHILE: "while">
+|
+  <FALSE: "false">
+|
+  <PRINT: "print">
+|
+  <RETURN: "return">
+|
+  <FUNCTION: "function">
+|
+  < ID: ["a"-"z", "A"-"Z"] (["a"-"z", "A"-"Z"] 
+  | ["0"-"9"])* ( ("_" (["a"-"z", "A"-"Z"] | ["0"-"9"]) )+ )*>
+|
+  < NUM: (["0"-"9"])+ ("." (["0"-"9"])+)?
+   ("E" ("+" | "-")? (["0"-"9"])+)?>
+}
+
+void LUGOSI():
+{}
+{
+  MAIN () (FUNC ())*
+}
+
+void MAIN():
+{}
+{
+  <MAIN> "{" VARDECL () SEQCOMANDOS () "}"
+}
+
+void VARDECL():
+{}
+{
+  (<VAR> TIPO () <ID> ";" VARDECL () )? 
+}
+
+void TIPO():
+{}
+{
+  (<INT> | <BOOL>)
+}
+
+void SEQCOMANDOS():
+{}
+{
+  (COMANDO () SEQCOMANDOS ())?
+}
+
+void COMANDO2():
+{}
+{
+  ":=" EXP () ";" | "(" (LISTAEXP ())? ")" ";"
+}
+
+void COMANDO():
+{}
+{ 
+  <ID> COMANDO2 ()
+  | <IF> "(" EXP () ")" "{" SEQCOMANDOS () "}" ";"
+  | <WHILE>  "(" EXP () ")" <DO> "{" SEQCOMANDOS () "}" ";"
+  | <DO> "{" SEQCOMANDOS () "}" <WHILE> "(" EXP () ")" ";"
+  | <RETURN> EXP () ";"
+  | <PRINT> "(" EXP () ")" ";" 
+}
+
+void EXP ():
+{}
+{
+  "(" EXP () OP () EXP () ")" | FATOR ()
+}
+
+void FATOR():
+{}
+{
+  <ID> FATOR2 () | <NUM> | <TRUE> | <FALSE>
+}
+
+void FATOR2 ():
+{}
+{
+  ("(" (LISTAEXP())? ")" )?  
+}
+
+void OP():
+{}
+{
+  "+" | "-" | "*" | "/" | "&&" | "||" | "<" | ">" | "=="
+}
+
+void LISTAEXP():
+{}
+{
+  EXP () LISTAEXP2 ()
+}
+
+void LISTAEXP2():
+{}
+{
+  ( "," EXP () LISTAEXP2 ())?
+}
+
+void FUNC():
+{}
+{
+  <FUNCTION> TIPO () <ID> "(" (LISTAARG ())? ")" "{" VARDECL () SEQCOMANDOS () "}"
+}
+
+void LISTAARG():
+{}
+{
+  TIPO () <ID> LISTAARG2 ()
+}
+
+void LISTAARG2 ():
+{}
+{
+  ("," TIPO ()  <ID>)?
+}
+

@@ -1,0 +1,16 @@
+main
+{
+    var int area;
+    var int raio;
+
+    raio := 100E-2;
+    
+    area := calculaArea (raio);
+
+    print (area);
+}
+
+function int calculaArea (int r)
+{
+    return ( (r * r) * 3.14);
+}
