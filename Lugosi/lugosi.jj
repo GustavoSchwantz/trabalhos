@@ -1,5 +1,292 @@
 PARSER_BEGIN(Lugosi)
 import java.io.*;
+import java.util.*;
+
+class ID {
+    String id;
+
+    ID(String id) {
+        this.id = id;
+    }
+}
+
+class LUGOSI {
+    MAIN main;
+    ArrayList<FUNC> funcs;
+    
+    LUGOSI(MAIN main, ArrayList<FUNC> funcs) {
+        this.main = main;
+        this.funcs = funcs;
+    }
+}
+
+class MAIN {
+    ArrayList<VARDECL> varDecls;
+    ArrayList<COMANDO> comandos;
+    
+    MAIN (ArrayList<VARDECL> varDecls,
+        ArrayList<COMANDO> comandos) {
+        this.varDecls = varDecls;
+        this.comandos = comandos;
+    }
+}
+
+class VARDECL {
+    TIPO tipo;
+    ID id;
+
+    VARDECL (TIPO tipo, ID id) {
+        this.tipo = tipo;
+        this.id = id;
+    }
+}
+
+class TIPO {}
+
+class INT extends TIPO {
+    String valor;
+
+    INT(String valor) {
+        this.valor = valor;
+    }
+}
+
+class BOOL extends TIPO {
+    String valor;
+
+    BOOL(String valor) {
+        this.valor = valor;
+    }
+}
+
+class COMANDO {}
+
+class COMANDO2 {}
+
+class ATRIBUICAO extends COMANDO2 {
+    EXP exp;
+
+    ATRIBUICAO(EXP exp) {
+        this.exp = exp;
+    }
+}
+
+class CHAMADA extends COMANDO2 {
+    ArrayList<EXP> listaExp;
+
+    CHAMADA(ArrayList<EXP> listaExp) {
+        this.listaExp = listaExp;
+    }    
+}
+
+class ATR_OU_CHA extends COMANDO {
+    ID id;
+    COMANDO2 comando2;
+    
+    ATR_OU_CHA(ID id, COMANDO2 comando2) {
+        this.id = id;
+        this.comando2 = comando2;
+    }
+}
+
+class CONDICIONAIS extends COMANDO {
+    EXP exp;
+    ArrayList<COMANDO> comandos;
+
+    CONDICIONAIS(EXP exp, ArrayList<COMANDO> comandos) {
+        this.exp = exp;
+        this.comandos = comandos;
+    }
+}
+
+class RETORNOS extends COMANDO {
+    EXP exp;
+
+    RETORNOS(EXP exp) {
+        this.exp = exp;
+    }
+}
+
+class EXP {}
+
+class EXPC extends EXP {
+    EXP exp1;
+    EXP exp2;
+    OP op;
+
+    EXPC(EXP exp1, EXP exp2, OP op) {
+        this.exp1 = exp1;
+        this.exp2 = exp2;
+        this.op = op;
+    }
+}
+
+class EXPS extends EXP {
+    FATOR fator;
+
+    EXPS(FATOR fator) {
+        this.fator = fator;
+    }
+}
+
+class FATOR {}
+
+class ID_OU_CHA extends FATOR {
+    ID id;
+    FATOR2 fator2;
+
+    ID_OU_CHA(ID id, FATOR2 fator2) {
+        this.id = id;
+        this.fator2 = fator2;
+    }
+}
+
+class NUM extends FATOR {
+    String num;
+
+    NUM(String num) {
+        this.num = num;
+    }
+}
+
+class TRUE extends FATOR {
+    String t;
+
+    TRUE(String t) {
+        this.t = t;
+    }
+
+}
+
+class FALSE extends FATOR {
+    String f;
+
+    FALSE(String f) {
+        this.f = f;
+    }
+}
+
+class FATOR2 {
+    ArrayList<EXP> listaExp;
+
+    FATOR2() {
+        this.listaExp = new ArrayList<EXP>();
+    }
+} 
+
+class OP {}
+
+class SOMA extends OP {
+    String soma;
+
+    SOMA(String soma) {
+        this.soma = soma;
+    }
+}
+
+class MENOS extends OP {
+    String menos;
+
+    MENOS(String menos) {
+        this.menos = menos;
+    }
+}
+
+class MULT extends OP {
+    String mult;
+
+    MULT(String mult) {
+        this.mult = mult;
+    }
+}
+
+class DIV extends OP {
+    String div;
+
+    DIV(String div) {
+        this.div = div;
+    }
+}
+
+class AND extends OP {
+    String and;
+
+    AND(String and) {
+        this.and = and;
+    }
+}
+
+class OR extends OP {
+    String or;
+
+    OR(String or) {
+        this.or = or;
+    }
+}
+
+class MENOR extends OP {
+    String menor;
+
+    MENOR(String menor) {
+        this.menor = menor;
+    }
+}
+
+class MAIOR extends OP {
+    String maior;
+
+    MAIOR(String maior) {
+        this.maior = maior;
+    }
+}
+
+class IGUAL extends OP {
+    String igual;
+
+    IGUAL(String igual) {
+        this.igual = igual;
+    }
+}
+
+class FUNC {
+    TIPO tipo;
+    ID id;
+    LISTAARG listaArg;
+    ArrayList<VARDECL> varDecls;
+    ArrayList<COMANDO> comandos;
+
+    FUNC(TIPO tipo, ID id, LISTAARG listaArg,
+        ArrayList<VARDECL> varDecls, ArrayList<COMANDO> comandos) {
+        this.tipo = tipo;
+        this.id = id;
+        this.listaArg = listaArg;
+        this.varDecls = varDecls;
+        this.comandos = comandos;
+    }
+}
+
+class LISTAARG {
+    TIPO tipo;
+    ID id;
+    ArrayList<LISTAARG2> listaArg2;
+
+    LISTAARG(TIPO tipo, ID id, ArrayList<LISTAARG2> listaArg2) {
+        this.tipo = tipo;
+        this.id = id;
+        this.listaArg2 = listaArg2;
+    }
+}
+
+class LISTAARG2 {
+    TIPO tipo;
+    ID id;
+
+    LISTAARG2(TIPO tipo, ID id) {
+        this.tipo = tipo;
+        this.id = id;
+    }
+}
+
 public class Lugosi {
 
     public static void main(String args[]) throws Exception {
@@ -17,8 +304,11 @@ public class Lugosi {
     // Chamar a primeira regra do parser que irá
     // analisar o código e devolver a árvore sintática
     
-    parser.LUGOSI();
-    // ArvoreLugosi arvore =parser.LUGOSI();
+    LUGOSI arvore = parser.LUGOSI();
+
+    if (arvore != null) {
+        System.out.println("Árvore gerada para o arquivo " + args[0]);
+    }
 
     // Passar a árvore para o prety printer:
 
@@ -77,104 +367,263 @@ TOKEN :
    ("E" ("+" | "-")? (["0"-"9"])+)?>
 }
 
-void LUGOSI():
-{}
+LUGOSI LUGOSI():
 {
-  MAIN () (FUNC ())*
+    MAIN m;
+    FUNC f;
+    ArrayList<FUNC> fs = new ArrayList<FUNC> ();
+}
+{
+    m = MAIN () 
+    (
+        f = FUNC ()
+        { fs.add (f); }
+    )*
+    <EOF>
+    { return new LUGOSI (m, fs); }
 }
 
-void MAIN():
-{}
+MAIN MAIN():
 {
-  <MAIN> "{" VARDECL () SEQCOMANDOS () "}"
+    ArrayList<VARDECL> vds;
+    ArrayList<COMANDO> scs;   
+}
+{
+    <MAIN> "{" vds = VARDECL () scs = SEQCOMANDOS () "}"
+    { return new MAIN (vds, scs); }
 }
 
-void VARDECL():
-{}
+ArrayList<VARDECL> VARDECL():
 {
-  (<VAR> TIPO () <ID> ";" VARDECL () )? 
+    TIPO t;
+    Token i;
+    VARDECL vd;
+    ArrayList<VARDECL> vds = new ArrayList<VARDECL>();
+    ArrayList<VARDECL> aux = new ArrayList<VARDECL>();
+}
+{
+    (
+        <VAR> 
+        t = TIPO () 
+        i = <ID> 
+        { vd = new VARDECL (t,  new ID (i.image)); vds.add(vd); }
+        ";"
+        aux = VARDECL ()
+        { vds.addAll(aux); } 
+    )? 
+
+    { return vds; } 
 }
 
-void TIPO():
-{}
+TIPO TIPO():
 {
-  (<INT> | <BOOL>)
+    Token t;
+}
+{
+  (t = <INT> { return new INT (t.image); } 
+  | t = <BOOL> { return new BOOL (t.image); })
 }
 
-void SEQCOMANDOS():
-{}
+ArrayList<COMANDO> SEQCOMANDOS():
 {
-  (COMANDO () SEQCOMANDOS ())?
+    COMANDO c;
+    ArrayList<COMANDO> aux;
+    ArrayList<COMANDO> scs = new ArrayList<COMANDO>();
+}
+{
+    (
+        c = COMANDO ()
+        { scs.add(c);  } 
+        aux = SEQCOMANDOS ()
+        {scs.addAll(aux); }
+    )?
+
+    { return scs; } 
 }
 
-void COMANDO2():
-{}
+COMANDO2 COMANDO2():
 {
-  ":=" EXP () ";" | "(" (LISTAEXP ())? ")" ";"
+    EXP e;
+    ArrayList<EXP> le = new ArrayList<EXP>();
+}
+{
+  ":=" e = EXP () ";" { return new ATRIBUICAO(e); } 
+  |
+  "(" (le = LISTAEXP ())? ")" ";" { return new CHAMADA(le); }
 }
 
-void COMANDO():
-{}
+COMANDO COMANDO():
+{
+    Token i;
+    COMANDO2 c2;
+    EXP e;
+    ArrayList<COMANDO> scs;
+}
 { 
-  <ID> COMANDO2 ()
-  | <IF> "(" EXP () ")" "{" SEQCOMANDOS () "}" ";"
-  | <WHILE>  "(" EXP () ")" <DO> "{" SEQCOMANDOS () "}" ";"
-  | <DO> "{" SEQCOMANDOS () "}" <WHILE> "(" EXP () ")" ";"
-  | <RETURN> EXP () ";"
-  | <PRINT> "(" EXP () ")" ";" 
+    i = <ID> c2 = COMANDO2 () { return new ATR_OU_CHA(new ID(i.image), c2);  }
+    | <IF> "(" e = EXP () ")" "{" scs = SEQCOMANDOS () "}" ";" { return new CONDICIONAIS(e, scs); }
+    | <WHILE>  "(" e = EXP () ")" <DO> "{" scs = SEQCOMANDOS () "}" ";" { return new CONDICIONAIS(e, scs); }
+    | <DO> "{" scs = SEQCOMANDOS () "}" <WHILE> "(" e = EXP () ")" ";" { return new CONDICIONAIS(e, scs); }
+    | <RETURN> e = EXP () ";" { return new RETORNOS(e); }
+    | <PRINT> "(" e = EXP () ")" ";" { return new RETORNOS(e); }
 }
 
-void EXP ():
-{}
+EXP EXP ():
 {
-  "(" EXP () OP () EXP () ")" | FATOR ()
+    EXP e1, e2;
+    OP o;
+    FATOR f;
+}
+{
+    "(" e1 = EXP () o = OP () e2 = EXP () ")" { return new EXPC(e1, e2, o); } 
+    | f = FATOR () { return new EXPS (f); }
 }
 
-void FATOR():
-{}
+FATOR FATOR():
 {
-  <ID> FATOR2 () | <NUM> | <TRUE> | <FALSE>
+    Token i;
+    FATOR2 f2;
+    Token t;
+}
+{
+     i = <ID> f2 = FATOR2 () { return new ID_OU_CHA(new ID(i.image), f2); }
+    | 
+     t = <NUM> { return new NUM(t.image); } 
+    |  
+     t = <TRUE> { return new TRUE(t.image); }
+    |
+     t = <FALSE> { return new FALSE(t.image); }
 }
 
-void FATOR2 ():
-{}
+FATOR2 FATOR2 ():
 {
-  ("(" (LISTAEXP())? ")" )?  
+    FATOR2 f2 = null;
+    ArrayList<EXP> le;
+}
+{
+    (
+       "("
+        { f2 = new FATOR2(); }
+        (
+            le = LISTAEXP() { f2.listaExp.addAll(le); } 
+        )? 
+       ")"
+    )?
+
+    { return f2; }  
 }
 
-void OP():
-{}
+OP OP():
 {
-  "+" | "-" | "*" | "/" | "&&" | "||" | "<" | ">" | "=="
+    Token t;
+}
+{
+    t = "+" { return new SOMA(t.image); } 
+   |
+    t = "-" { return new MENOS(t.image); }
+   |
+    t = "*" { return new MULT(t.image); }
+   |
+    t = "/" { return new DIV(t.image); }
+   |
+    t = "&&" { return new AND(t.image); } 
+   |
+    t = "||" { return new OR(t.image); }
+   |
+    t = "<"  { return new MENOR(t.image); }
+   | 
+    t = ">"  { return new MAIOR(t.image); }
+   | 
+    t = "==" { return new IGUAL(t.image); }
 }
 
-void LISTAEXP():
-{}
+ArrayList<EXP> LISTAEXP():
 {
-  EXP () LISTAEXP2 ()
+    EXP e;
+    ArrayList<EXP> le2;
+    ArrayList<EXP> le = new ArrayList<EXP>();
+}
+{
+    e = EXP ()         { le.add(e);      }
+    le2 = LISTAEXP2 () { le.addAll(le2); }
+
+    { return le; }
 }
 
-void LISTAEXP2():
-{}
+ArrayList<EXP> LISTAEXP2():
 {
-  ( "," EXP () LISTAEXP2 ())?
+     EXP e;
+     ArrayList<EXP> le2;
+     ArrayList<EXP> le = new ArrayList<EXP>();
+
+}
+{
+    (
+       ","
+        e = EXP ()   { le.add(e); }
+        le2 = LISTAEXP2 () { le.addAll(le2); }
+    )?
+
+    { return le; }
 }
 
-void FUNC():
-{}
+FUNC FUNC():
 {
-  <FUNCTION> TIPO () <ID> "(" (LISTAARG ())? ")" "{" VARDECL () SEQCOMANDOS () "}"
+    TIPO t;
+    Token i;
+    LISTAARG la = null;
+    ArrayList<VARDECL> vd;
+    ArrayList<COMANDO> sc;
+}
+{
+    <FUNCTION>
+    t = TIPO () 
+    i = <ID> 
+    "("
+     (
+         la = LISTAARG ()
+     )? 
+    ")"
+    "{"
+     vd = VARDECL ()
+     sc = SEQCOMANDOS () 
+     "}"
+
+     { return new FUNC(t, new ID(i.image), la, vd, sc); }
 }
 
-void LISTAARG():
-{}
+LISTAARG LISTAARG():
 {
-  TIPO () <ID> LISTAARG2 ()
+    TIPO t;
+    Token i;
+    ArrayList<LISTAARG2> la2;
+}
+{
+    t = TIPO () 
+    i = <ID> 
+    la2 = LISTAARG2 ()
+
+    { return new LISTAARG(t, new ID(i.image), la2); }
 }
 
-void LISTAARG2 ():
-{}
+ArrayList<LISTAARG2> LISTAARG2():
 {
-  ("," TIPO ()  <ID>)?
+    TIPO t;
+    Token i;
+    LISTAARG2 a;
+    ArrayList<LISTAARG2> la = new ArrayList<LISTAARG2>();
+    ArrayList<LISTAARG2> la2;
+}
+{
+    (
+        ","
+         t = TIPO () 
+         i = <ID>
+         { a = new LISTAARG2(t, new ID(i.image)); la.add(a); } 
+         la2 = LISTAARG2 ()
+         { la.addAll(la2); }
+    )?
+
+    { return la; }
 }
 
