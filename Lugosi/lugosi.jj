@@ -89,20 +89,48 @@ class ATR_OU_CHA extends COMANDO {
     }
 }
 
-class CONDICIONAIS extends COMANDO {
+class IF extends COMANDO {
     EXP exp;
     ArrayList<COMANDO> comandos;
 
-    CONDICIONAIS(EXP exp, ArrayList<COMANDO> comandos) {
+    IF(EXP exp, ArrayList<COMANDO> comandos) {
         this.exp = exp;
         this.comandos = comandos;
     }
 }
 
-class RETORNOS extends COMANDO {
+class WHILE extends COMANDO {
+    EXP exp;
+    ArrayList<COMANDO> comandos;
+
+    WHILE(EXP exp, ArrayList<COMANDO> comandos) {
+        this.exp = exp;
+        this.comandos = comandos;
+    }
+}
+
+class DO extends COMANDO {
+    EXP exp;
+    ArrayList<COMANDO> comandos;
+
+    DO(EXP exp, ArrayList<COMANDO> comandos) {
+        this.exp = exp;
+        this.comandos = comandos;
+    }
+}
+
+class RETURN extends COMANDO {
     EXP exp;
 
-    RETORNOS(EXP exp) {
+    RETURN(EXP exp) {
+        this.exp = exp;
+    }
+}
+
+class PRINT extends COMANDO {
+    EXP exp;
+
+    PRINT(EXP exp) {
         this.exp = exp;
     }
 }
@@ -306,13 +334,11 @@ public class Lugosi {
     
     LUGOSI arvore = parser.LUGOSI();
 
-    if (arvore != null) {
-        System.out.println("Árvore gerada para o arquivo " + args[0]);
-    }
-
     // Passar a árvore para o prety printer:
 
-    // pprint(arvore);
+    PrettyPrinter pp = new PrettyPrinter (arvore);
+
+    pp.pprint ();
 
     // passar a árvore para o gerador de código
 
@@ -461,11 +487,11 @@ COMANDO COMANDO():
 }
 { 
     i = <ID> c2 = COMANDO2 () { return new ATR_OU_CHA(new ID(i.image), c2);  }
-    | <IF> "(" e = EXP () ")" "{" scs = SEQCOMANDOS () "}" ";" { return new CONDICIONAIS(e, scs); }
-    | <WHILE>  "(" e = EXP () ")" <DO> "{" scs = SEQCOMANDOS () "}" ";" { return new CONDICIONAIS(e, scs); }
-    | <DO> "{" scs = SEQCOMANDOS () "}" <WHILE> "(" e = EXP () ")" ";" { return new CONDICIONAIS(e, scs); }
-    | <RETURN> e = EXP () ";" { return new RETORNOS(e); }
-    | <PRINT> "(" e = EXP () ")" ";" { return new RETORNOS(e); }
+    | <IF> "(" e = EXP () ")" "{" scs = SEQCOMANDOS () "}" ";" { return new IF(e, scs); }
+    | <WHILE>  "(" e = EXP () ")" <DO> "{" scs = SEQCOMANDOS () "}" ";" { return new WHILE(e, scs); }
+    | <DO> "{" scs = SEQCOMANDOS () "}" <WHILE> "(" e = EXP () ")" ";" { return new DO(e, scs); }
+    | <RETURN> e = EXP () ";" { return new RETURN(e); }
+    | <PRINT> "(" e = EXP () ")" ";" { return new PRINT(e); }
 }
 
 EXP EXP ():
