@@ -30,8 +30,6 @@ typedef struct requisicao {
 } requisicao_t;
 
 typedef struct resposta {
-        int op;                  // tipo de resultado
-
 	int res_1;               // resultados
 	indice_fs_t res_2;
 	indice_arquivo_t res_3;
@@ -44,15 +42,21 @@ typedef struct resposta {
  * porta
  *  */
 int establish (unsigned short pn);
+
 /* recebe um socket como parâmetro e espera por
  * uma requisão neste socket. Caso receba, devolve
  * um novo socket para a conexão
  * */
 int get_connection (int s);
+
 /* preenche buf com n bytes lidos do socket s.
  * Retorna o número de bytes lidos do socket 
  * */
 int read_data (int s, void *buf, int n);
+
+/* escreve n bytes de buf no socket s.
+ *  * Retorna o número de bytes escritos no socket*/
+int write_data (int s, void *buf, int n);
 
 int main ()
 {
@@ -73,15 +77,31 @@ int main ()
                 exit (1);
 	}
 
-	puts ("Conexão estabelecida!");
-
 	requisicao_t req;
+	resposta_t res;
 
-        read_data (t, (void *) &req, sizeof (struct requisicao));
-        
-        printf ("Operação: %d\n", req.op);
-	printf ("Arquivo: %s\n", req.sa);
-	printf ("Blocos: %d\n", req.blocos);
+        for ( ; ; ) {
+
+		if (read_data (t, (void*) &req, sizeof (struct requisicao)) < 0) {
+			puts ("Falha ao receber dados do cliente.");
+                        exit (1);
+		}
+
+		switch (req.op)
+		{
+			case 0:
+			{
+				res.res_1 = initfs (req.sa, req.blocos);
+                                
+				if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+                                        exit (1);
+				}
+			}
+
+			break;
+		}
+	}	
 
 	close (t);
 	close (s);
@@ -154,3 +174,26 @@ int read_data (int s, void *buf, int n)
 	
 	return (bcount); 
 }
+
+int write_data (int s, void *buf, int n)
+{
+       	int bcount;                                              // conta o número de bytes escrito  
+        int br;                                                  // bytes escritos em uma chamada a write
+
+        bcount = 0;
+        br = 0;
+
+        /* enquanto não houver escrito n bytes */
+        while (bcount < n) {
+	       	/* escreve br bytes no socket */
+	        if ( ( br = write (s, buf, n-bcount) ) > 0 ) {
+		       	bcount += br;                           // incrementa o contador de bytes                     
+			buf += br;                              // atualiza ptr do buffer
+	       	}
+	       	else if (br < 0)                                // deu ruim 
+			return (-1);
+	}
+
+	return (bcount);
+}
+
