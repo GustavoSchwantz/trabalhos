@@ -17,10 +17,10 @@
 typedef struct requisicao {
         int op;                     // operação a ser realizada no servidor
 
-	char sa [10];               // parâmetros para a operação
+	char sa [20];               // parâmetros para a operação
         int blocos;
 	indice_fs_t fs;
-	char nome [10];
+	char nome [20];
 	int acesso;
 	int versao;
 	indice_arquivo_t arquivo;
@@ -61,13 +61,16 @@ int write_data (int s, void *buf, int n);
 int main ()
 {
 	int s;
+        
+	puts ("Criando porta de escuta...");
 
 	if ((s = establish (PORT)) < 0) { 
 	       	puts ("Erro ao criar porta de escuta no servidor."); 
 		exit (1); 
 	}
 
-	puts ("Servidor esperando por requisição...");
+	puts ("Porta de escuta criada!");
+	puts ("Servidor esperando por conexão...");
 
         int t;
         
@@ -77,34 +80,228 @@ int main ()
                 exit (1);
 	}
 
+	puts ("Conexão estabelecida!");
+
 	requisicao_t req;
 	resposta_t res;
 
-        for ( ; ; ) {
+        do {
+                
+		puts ("Esperando por requisição do cliente.");
 
 		if (read_data (t, (void*) &req, sizeof (struct requisicao)) < 0) {
 			puts ("Falha ao receber dados do cliente.");
                         exit (1);
 		}
 
+		puts ("Requisição recebida!");
+
 		switch (req.op)
 		{
 			case 0:
+				puts ("Encerrando conexão com o cliente...");
+				break;
+			case 1:
 			{
-				res.res_1 = initfs (req.sa, req.blocos);
-                                
+				puts ("Função \"initfs\" selecionada.");
+
+				if ((res.res_1 = initfs (req.sa, req.blocos)) == FALHA) 
+					puts ("Falha ao criar novo sistema de arquivos.");
+				
+				puts ("Novo sistema de arquivos criado!");
 				if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
 					puts ("Falha ao enviar dados ao cliente");
+					close (t);
+					close (s);
                                         exit (1);
 				}
+				
 			}
+				break;
+			case 2:
+			{
+				puts ("Função \"vopenfs\" selecionada.");
 
-			break;
+				if ( (res.res_2 = vopenfs (req.sa)) == FALHA)
+					puts ("Falha ao abrir o sistema de arquivos.");
+				
+				puts ("Sistema de arquivos aberto!");
+                                if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+			        	puts ("Falha ao enviar dados ao cliente");
+	                                close (t);
+					close (s);
+					exit (1);
+				}	
+			}
+		        	break;	
+			case 3:
+			{
+				puts ("Função \"vopen\" selecionada.");
+
+				if ( (res.res_3 = vopen (req.fs, req.nome, req.acesso, req.versao)) == FALHA)
+					 puts ("Falha ao abrir arquivo.");
+				
+			        puts ("Arquivo aberto!");
+                                if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+				        close (t);
+				        close (s);
+				         exit (1);
+				}
+			}
+		        	break;	
+			case 4:
+			{
+                        	puts ("Função \"vclose\" selecionada.");
+
+				if ( (res.res_1 = vclose (req.arquivo)) == FALHA)
+					puts ("Falha ao fechar arquivo.");
+				
+				puts ("Arquivo fechado!");
+				if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+					close (t);
+					close (s);
+					exit (1);
+				}
+			}
+		        	break;	
+			case 5:
+			{
+                        	puts ("Função \"vread\" selecionada.");
+
+				res.res_4 = vread (req.arquivo, req.tam, req.buffer);
+
+                                puts ("Arquivo lido!");
+                                if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+					close (t);
+					close (s);
+					exit (1);
+				}
+			}
+		        	break;
+			case 6:
+			{
+				puts ("Função \"vwrite\" selecionada.");
+
+                                if ( (res.res_1 = vwrite (req.arquivo, req.tam, req.buffer)) == FALHA)
+				       	puts ("Falha ao escrever arquivo.");
+                              
+				puts ("Arquivo escrito!");
+                                if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+					close (t);
+					close (s);
+					exit (1);
+				}
+			}
+		        	break;	
+                        case 7:
+			{
+				puts ("Função \"vdelete\" selecionada.");
+                                
+				if ( (res.res_1 = vdelete (req.arquivo)) == FALHA)
+					puts ("Falha ao deletar arquivo.");
+
+				puts ("Arquivo deletado!");
+				if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+					close (t);
+					close (s);
+					exit (1);
+				}
+			}
+				break;
+			case 8:
+			{
+                        	puts ("Função \"vseek\" selecionada.");
+
+				if ( (res.res_1 = vseek (req.arquivo, req.seek)) == FALHA)
+					puts ("Falha ao deletar arquivo.");
+				
+				puts ("Seek do arquivo atualizado!");
+				if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+					close (t);
+					close (s);
+					exit (1);
+				}
+			}
+		        	break;	
+			case 9:
+			{
+				puts ("Função \"vcreation\" selecionada.");
+
+				res.res_5 = vcreation (req.arquivo, req.versao);
+
+				puts ("Tempo de criação do arquivo obtido!");
+
+			        if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+				        close (t);
+				        close (s);
+				        exit (1);
+				}	
+			}
+		        	break;	
+			case 10:
+			{
+                        	puts ("Função \"vaccessed\" selecionada.");
+
+				res.res_5 = vaccessed (req.arquivo, req.versao);
+
+				puts ("Tempo de acesso obtido!");
+
+				if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+					close (t);
+					close (s);
+					exit (1);
+				}
+			}
+		        	break;
+			case 11:
+			{
+				puts ("Função \"vlast_modified\" selecionada.");
+
+				res.res_5 = vlast_modified (req.arquivo, req.versao);
+
+				puts ("Tempo de última modificação obtido!");
+
+				if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+					close (t);
+					close (s);
+					exit (1);
+				}
+			}
+		        	break;
+			case 12:
+			{
+                        	puts ("Função \"vclosefs\" selecionada.");
+
+				res.res_1 = vclosefs (req.fs);
+
+				puts ("Sistema de arquivos fechado!");
+
+				if (write_data (t, (void*) &res, sizeof (struct resposta)) < 0) {
+					puts ("Falha ao enviar dados ao cliente");
+					close (t);
+					close (s);
+					exit (1);
+				}
+			}
+		        	break;	
 		}
-	}	
+	} while (req.op);	
 
 	close (t);
 	close (s);
+
+	puts ("Conexão com o cliente encerrada.");
+	puts ("Socket de escuta fechado!");
+	puts ("Fim da execução do servidor");
 
 	return 0;
 }

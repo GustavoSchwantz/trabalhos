@@ -15,6 +15,8 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
+#define YES                1                      
+#define NO                 0
 #define SUCESSO            1
 #define FALHA              0
 #define LEITURA            0
@@ -36,6 +38,27 @@
 
 typedef int indice_arquivo_t;
 typedef int indice_fs_t;
+
+/* estrutura que representa uma entrada na tabela de arquivos abertos (do cliente) */
+typedef struct entry_oft {
+	indice_fs_t owner;        // indica a qual sistema de arquivo pertence o arquivo 
+	int occupied;             // flag que indica se a entrada esta sendo usada 
+	char nome [20];           // nome do arquivo
+	indice_arquivo_t indice;  // indice do arquivo aberto
+        int versao;               // versão do arquivo
+} entry_oft_t;
+        	
+/* estrutura que representa um sistema de arquivos */
+typedef struct file_system {
+	int occupied;                         // flag que indica se a entrada esta sendo usada
+	char nome [20];                       // nome do sistema de arquivos
+        indice_fs_t indice;                   // indice do sistema de arquivos
+        struct entry_oft arquivos [10];       // tabela de arquivos abertos
+	int arqs_abertos;                     // número de arquivos abertos no sistema de arquivos
+} file_system_t;
+
+file_system_t fst [5];           // sistemas de arquivos que estão abertos
+int sa_abertos;                  // número de sistemas de arquivos abertos
 
 typedef struct requisicao {
 	int op;                     // operação a ser realizada no servidor

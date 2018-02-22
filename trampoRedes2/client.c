@@ -17,29 +17,6 @@ int main ()
 
 	puts ("Conexão com o servidor estabelecida!");
         
-        int opcao;
-
-        do {
-		printf ("Entre com uma opção: ");
-		scanf ("%d", &opcao);
-
-		switch (opcao)
-		{
-			case 0:
-				break;
-			case 1:
-			{
-				if (initfs ("small_fs.bin", 500) == FALHA)
-					puts ("Não foi possível criar o sistema de arquivos.");
-				else
-					puts ("Sistema de arquivos criado.");
-			}
-				break;
-			default:
-				puts ("Opção inválida!");
-		}
-
-	} while (opcao);	
 
 	close (s);
 
