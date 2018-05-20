@@ -1,0 +1,12 @@
+pegaMaiores 4 [10,2,3,4,5]
+=
+10 : pegaMaiores 3 [2,3,4,5]
+=
+10 : 5 : pegaMaiores 2 [2,3,4]
+= 
+10 : 5 : 4 : pegaMaiores 1 [2,3]
+=
+10 : 5 : 4 : 3 : pegaMaiores 0 [2]
+=
+10 : 5 : 4 : 3 : []
+
